@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<context:component-scan base-package="kr.co.koza.service"></context:component-scan>
+	<context:component-scan base-package="kr.co.koza.aop"></context:component-scan>
+	<context:component-scan base-package="kr.co.koza.mail"></context:component-scan>
+	
+	<!-- Mybatis 사용 기준 가장 쉬운 방법1 -->
+	<!-- 아래 패키지 기준으로 인터페이스 찾아서 @Select, @Insert -->
+	<!-- DAO 객체를 자동으로 생성하고 IOC 컨테이너에 담는 방법 -->
+	<mybatis-spring:scan base-package="kr.co.koza.mapper"/>
+	
+	<!--  DataSource 인스턴스 생성 및 등록 -->
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@54.180.106.38:1521:xe"></property>
+		<property name="username" value="yongsu"></property>
+		<property name="password" value="gochang106"></property>
+	</bean>
+	<bean id = "sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		
+	</bean>
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+</beans>
+
+
